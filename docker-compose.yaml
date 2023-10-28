@@ -1,0 +1,29 @@
+version: "3"
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  todoapi-docker:
+    build: .
+    networks:
+      - app-tier
+    ports:
+      - "6000:6000"
+    depends_on:
+      - dbpgsql
+    volumes:
+      - ".:/ramandadanny/hw11rakamin"
+  dbpgsql:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    networks:
+      - app-tier
